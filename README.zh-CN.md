@@ -8,6 +8,8 @@
 
 大多数 skill 审计工具只做 SKILL.md 的静态检查。这个工具还会挖掘你的真实 session 记录，量化触发率、用户满意度、workflow 完成率和漏触发缺口，最终为每个 skill 打出 5 分制综合评分。
 
+它也支持一种 **source repository 审计模式**：当一个公开 skill 仓库还在积累真实使用证据时，可以退回到 validator、example prompts、validation log、CI 和维护者 session 这些次级证据，同时明确把触发率、用户反应之类缺少真实路由样本的维度标成低置信度或 `N/A`。
+
 ## 功能
 
 **6 个评分维度**（加权计入综合分）：
@@ -28,6 +30,24 @@
 | **误触发** | 假阳性 — skill 触发了但用户不需要 |
 | **跨 Skill 冲突** | 触发关键词重叠和 skill 间矛盾指导 |
 | **环境一致性** | 文件路径失效、CLI 工具缺失、目录不存在 |
+
+## 审计模式
+
+### 已安装 Skill 模式
+
+当目标 skill 已经装在 `~/.claude/skills/`、`~/.codex/skills/` 或 `~/.agents/skills/` 下时，优先使用这个模式。它的置信度最高，因为可以直接从 session transcript 里寻找真实调用证据。
+
+### Source Repository 模式
+
+当你审计的是一个准备公开、还没积累足够 live routing 数据的 skill 仓库时，使用这个模式。优化器仍然会跑完整 8 维，但会把 repo validator、example prompts、validation log、review checklist 和 CI 当成 fallback evidence，而不会假装它们等同于真实路由遥测。
+
+## 什么时候必须补 Routing Eval
+
+routing-eval / transcript 证据并不是对每个仓库都同等紧急。
+
+- 当仓库声称这些 skills 已经 routing-proven、production-ready，或者已经在真实 agent 使用里验证过时，这就是 `P0`。
+- 当仓库明确把自己定位成 docs-first、draft 或 beta，而且已经诚实地区分“已证明”和“待验证”时，这更适合作为 `P1` 或下一阶段证据工作。
+- 当审计目标只是做静态清理、仓库本身也没有做任何路由成熟度承诺时，这项工作可以先不排在最前面。
 
 ## 安装
 
@@ -71,6 +91,15 @@ cp -r /tmp/skill-optimizer/skills/skill-optimizer ~/.agents/skills/
 rm -rf /tmp/skill-optimizer
 ```
 
+```powershell
+# Windows PowerShell 示例（Codex）
+$target = Join-Path $env:TEMP 'skill-optimizer'
+git clone https://github.com/hqhq1025/skill-optimizer.git $target
+New-Item -ItemType Directory -Force -Path "$HOME\\.codex\\skills" | Out-Null
+Copy-Item -Recurse -Force "$target\\skills\\skill-optimizer" "$HOME\\.codex\\skills\\"
+Remove-Item -Recurse -Force $target
+```
+
 </details>
 
 ## 使用
@@ -98,6 +127,15 @@ rm -rf /tmp/skill-optimizer
 | Codex | `~/.codex/skills/` | `~/.codex/sessions/**/*.jsonl` |
 | 共享 | `~/.agents/skills/` | — |
 
+对于 Codex，`base_instructions` 里出现 skill 被加载，并不等于 skill 真的被调用。优化器会继续寻找 workflow marker 或明确的 prompt/result 证据，再把它计作一次 invocation。
+
+如果审计的是 source repository，而不是已经安装到本地目录的 skill，优化器还可以读取：
+
+- 仓库自带 validator
+- `references/` 文件和 `agents/openai.yaml`
+- example prompts 与 validation log
+- CI workflow 与 forward-test 记录
+
 ## 研究背景
 
 分析维度基于同行评审的学术研究：
@@ -124,6 +162,58 @@ rm -rf /tmp/skill-optimizer
        ↓
 输出 P0/P1/P2 优先级修复报告
 ```
+
+当 session 数据不足时，优化器仍然会坚持跑完整 8 个维度，并把证据不足的指标明确标成 `N/A`，而不是伪造分数。
+
+## 示例仓库审计
+
+示例：一个 docs-first 的小程序 skill 仓库里有 4 个 public skills，validator 和 CI 都通过，也有 example prompts、validation log 和 forward-test 记录，但历史 session 主要还是维护者在建设仓库，而不是已经安装好的 skills 在真实对话里被稳定路由。
+
+这时正确的审计结论应该是：
+
+- 静态质量和渐进式加载可以正常打分
+- workflow completion 可以把 validation log 当作中等置信度证据
+- 触发率、用户反应、漏触发要标成低置信度或 `N/A`
+- 缺少 routing transcript 应该被列成“下一阶段最重要的 `P1`”，而不是机械地判成 `P0`；除非仓库已经对外宣称自己有真实路由证明
+
+## 示例输出
+
+```markdown
+# Skill Optimization Report
+**Date**: 2026-03-30
+**Scope**: `miniprogram_skills` 里的全部 public skills
+**Evidence**: validator 通过、CI、validation log、8 条维护者 session
+**Confidence**: static=high, workflow=medium, routing=low
+**Release stage**: docs-first public beta
+
+## Overview
+| Skill | Trigger | Reaction | Completion | Static | Undertrigger | Token | Score |
+|-------|---------|----------|------------|--------|--------------|-------|-------|
+| miniapp-devtools-cli-repair | N/A | N/A | strong | strong | N/A | strong | 4/5 |
+| miniapp-devtools-gui-check | N/A | N/A | strong | strong | N/A | strong | 4/5 |
+
+## P0 Fixes
+当前证据集下无 P0。
+
+## P1 Improvements
+1. 给每个 public skill 补 1 条 installed-skill transcript 或可重放 routing eval。
+2. 给相邻 skill 边界补负路径验证。
+
+## Milestone Fit
+- current-milestone blockers: 除仓库已声明的 beta 限制外，无新增阻塞
+- next-milestone evidence work: transcript-backed routing proof
+
+## Per-Skill Diagnostics
+### miniapp-devtools-gui-check
+#### 4.1 Trigger Rate
+N/A — 缺少足够的 live routing evidence
+#### 4.3 Workflow Completion
+Strong。validation log 证明过一次真实的窄路由宿主机检查并生成报告。
+#### 4.6 Cross-Skill Conflicts
+Moderate but controlled。主要重叠对象是 miniapp-devtools-cli-repair。
+```
+
+这就是 source-repository 模式下期望的输出风格：保留完整 8 维，诚实标注证据等级，不因为缺少 live routing 数据就伪造一个看起来很确定的结论。
 
 **评分维度（加权平均）：**
 - 触发率：25%
