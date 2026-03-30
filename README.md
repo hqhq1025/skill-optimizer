@@ -8,6 +8,8 @@ Works with **Claude Code**, **Codex**, and any agent supporting the Agent Skills
 
 Most skill auditors only do static checks on your SKILL.md. This one also mines your actual session transcripts to measure trigger rates, user satisfaction, workflow completion, and undertrigger gaps — then scores each skill on a 5-point composite scale.
 
+It also works in a **source-repository audit mode** for public skill collections that are still building usage evidence. In that mode it uses validators, example prompts, validation logs, CI, and maintainer sessions as secondary evidence, while clearly marking trigger-rate and reaction findings as low-confidence or `N/A` when live routing data is missing.
+
 ## What It Does
 
 **6 scored dimensions** (weighted into composite score):
@@ -28,6 +30,24 @@ Most skill auditors only do static checks on your SKILL.md. This one also mines 
 | **Overtrigger** | False positives — skill fired but user didn't want it |
 | **Cross-Skill Conflicts** | Trigger keyword overlap and contradictory guidance between skills |
 | **Environment Consistency** | Broken file paths, missing CLI tools, non-existent directories |
+
+## Audit Modes
+
+### Installed Skill Mode
+
+Use this when the skills are already installed under `~/.claude/skills/`, `~/.codex/skills/`, or `~/.agents/skills/`. This is the highest-confidence mode because invocation evidence can come directly from session transcripts.
+
+### Source Repository Mode
+
+Use this when you are auditing a skill repository before or alongside publication. The optimizer can still run all 8 dimensions, but it treats repo validators, example prompts, validation logs, review checklists, and CI as fallback evidence rather than pretending they are the same as live routing telemetry.
+
+## When Routing Eval Is Necessary
+
+Routing-eval or transcript evidence is not equally urgent for every repository.
+
+- Treat it as `P0` when the repository claims the skills are already routing-proven, production-ready, or validated in real agent use.
+- Treat it as `P1` or next-milestone evidence work when the repository is honestly positioned as docs-first, draft, or beta and already separates proven behavior from future validation goals.
+- Treat it as optional only when the repository is not making routing claims at all and the audit goal is purely static cleanup.
 
 ## Installation
 
@@ -71,6 +91,15 @@ cp -r /tmp/skill-optimizer/skills/skill-optimizer ~/.agents/skills/
 rm -rf /tmp/skill-optimizer
 ```
 
+```powershell
+# Windows PowerShell example for Codex
+$target = Join-Path $env:TEMP 'skill-optimizer'
+git clone https://github.com/hqhq1025/skill-optimizer.git $target
+New-Item -ItemType Directory -Force -Path "$HOME\\.codex\\skills" | Out-Null
+Copy-Item -Recurse -Force "$target\\skills\\skill-optimizer" "$HOME\\.codex\\skills\\"
+Remove-Item -Recurse -Force $target
+```
+
 </details>
 
 ## Usage
@@ -98,6 +127,15 @@ The optimizer auto-detects available platforms and scans session data from all o
 | Codex | `~/.codex/skills/` | `~/.codex/sessions/**/*.jsonl` |
 | Shared | `~/.agents/skills/` | — |
 
+For Codex, skill loading in `base_instructions` is not enough to prove actual use. The optimizer looks for workflow markers or explicit prompt/result evidence before counting an invocation.
+
+When auditing a source repository instead of an installed skill directory, the optimizer can also use:
+
+- repo-owned validators
+- `references/` files and `agents/openai.yaml`
+- example prompts and validation logs
+- CI workflows and forward-test records
+
 ## Research Background
 
 The analysis dimensions are grounded in peer-reviewed research:
@@ -124,6 +162,58 @@ Compute composite scores (weighted average of 6 scored dimensions)
         ↓
 Output report with P0/P1/P2 prioritized fixes
 ```
+
+When session data is sparse, the optimizer still runs all 8 dimensions and explicitly marks any unsupported metrics as `N/A` instead of fabricating a score.
+
+## Example Repository Audit
+
+Example: a docs-first miniapp skill repository contains 4 public skills, passes validators and CI, has example prompts plus forward-test notes, but only has maintainer sessions instead of clean installed-skill routing transcripts.
+
+The correct audit result is:
+
+- score static quality and progressive disclosure normally
+- use validation logs as medium-confidence workflow evidence
+- mark trigger rate, user reaction, and undertrigger as low-confidence or `N/A`
+- report missing routing transcripts as the highest-priority `P1` for the next maturity step, not as a false `P0`, unless the repo is already claiming routing proof
+
+## Example Output
+
+```markdown
+# Skill Optimization Report
+**Date**: 2026-03-30
+**Scope**: all public skills in `miniprogram_skills`
+**Evidence**: validator pass, CI, validation log, 8 maintainer sessions
+**Confidence**: static=high, workflow=medium, routing=low
+**Release stage**: docs-first public beta
+
+## Overview
+| Skill | Trigger | Reaction | Completion | Static | Undertrigger | Token | Score |
+|-------|---------|----------|------------|--------|--------------|-------|-------|
+| miniapp-devtools-cli-repair | N/A | N/A | strong | strong | N/A | strong | 4/5 |
+| miniapp-devtools-gui-check | N/A | N/A | strong | strong | N/A | strong | 4/5 |
+
+## P0 Fixes
+None from the current evidence set.
+
+## P1 Improvements
+1. Add one installed-skill transcript or replayable routing eval per public skill.
+2. Add negative-path validation for adjacent skill boundaries.
+
+## Milestone Fit
+- current-milestone blockers: none beyond already-declared beta limits
+- next-milestone evidence work: transcript-backed routing proof
+
+## Per-Skill Diagnostics
+### miniapp-devtools-gui-check
+#### 4.1 Trigger Rate
+N/A — insufficient live routing evidence
+#### 4.3 Workflow Completion
+Strong. Validation logs show one narrow host-side route check reaching a real report.
+#### 4.6 Cross-Skill Conflicts
+Moderate but controlled. Primary overlap is with miniapp-devtools-cli-repair.
+```
+
+This is the intended behavior for source-repository mode: keep the report honest, keep all 8 dimensions, and avoid overstating routing quality when the available evidence is mostly static or curated.
 
 **Scored dimensions (weighted average):**
 - Trigger rate: 25%
