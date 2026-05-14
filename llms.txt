@@ -2,6 +2,8 @@
 
 Skill Optimizer is a public Agent Skills lifecycle toolkit by hqhq1025.
 
+Current release: v2.0.0.
+
 It contains three installable `SKILL.md` packages:
 
 - `skill-miner`: mines coding-agent histories, archived sessions, memories, summaries, and exported transcripts to discover repeated workflows that may deserve new skills.

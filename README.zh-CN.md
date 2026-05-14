@@ -8,6 +8,8 @@
 - **skill-personalizer**：审计并把新建、下载、fork 或社区里的 skill 调成适合某个用户真实工具、习惯、目录和 session 历史的个人版。
 - **skill-generalizer**：把本地、私有、个人化的 skill 提炼成可发布到 GitHub、marketplace、团队或公开社区的通用 skill。
 
+当前版本：**v2.0.0**。这是从原单一 optimizer skill 到生命周期三件套的一次 major redesign。
+
 拆成三个 skill 是故意的。发现、个人化、公开发布是不同工作：
 
 | 目标 | Skill | 优化方向 |

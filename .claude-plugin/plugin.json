@@ -1,7 +1,7 @@
 {
   "name": "skill-optimizer",
   "description": "Agent Skills for improving SKILL.md files: mine repeated workflows from history, personalize and audit existing skills, or generalize personal skills for publication.",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": {
     "name": "hqhq1025"
   },

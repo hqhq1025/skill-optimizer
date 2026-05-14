@@ -5,6 +5,7 @@
 Skill Optimizer is an Agent Skills lifecycle toolkit. It helps users turn coding-agent experience into reusable skills, tune skills to local usage, and prepare skills for public release.
 
 Repository: https://github.com/hqhq1025/skill-optimizer
+Current release: v2.0.0
 
 ## Skill Lifecycle Model
 

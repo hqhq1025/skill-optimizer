@@ -8,6 +8,8 @@ Three Agent Skills for turning coding-agent work into better `SKILL.md` files:
 - **skill-personalizer** — audit and adapt newly created, downloaded, forked, or community skills to one user's own tools, habits, directories, and session history.
 - **skill-generalizer** — turn local, private, personal skills into publishable skills for GitHub, marketplaces, teams, or public sharing.
 
+Current release: **v2.0.0**. This is a major redesign from the original single-skill optimizer.
+
 The split is intentional. Generating, personalizing, and publishing skills are different jobs:
 
 | Goal | Skill | Optimization Direction |
