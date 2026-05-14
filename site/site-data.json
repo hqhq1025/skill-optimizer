@@ -1,0 +1,11 @@
+{
+  "name": "Skill Optimizer",
+  "version": "2.0.0",
+  "repository": "https://github.com/hqhq1025/skill-optimizer",
+  "skills": [
+    {"name": "skill-miner", "purpose": "Mine coding-agent history for repeated workflows."},
+    {"name": "skill-personalizer", "purpose": "Audit and tune existing skills for local use."},
+    {"name": "skill-generalizer", "purpose": "Generalize personal skills for public release."}
+  ],
+  "machineReadable": ["llms.txt", "llms-full.txt", "repo-metadata.json"]
+}

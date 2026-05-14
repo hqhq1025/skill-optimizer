@@ -10,6 +10,8 @@
 
 当前版本：**v2.0.0**。这是从原单一 optimizer skill 到生命周期三件套的一次 major redesign。
 
+项目站点：https://hqhq1025.github.io/skill-optimizer/
+
 拆成三个 skill 是故意的。发现、个人化、公开发布是不同工作：
 
 | 目标 | Skill | 优化方向 |
@@ -150,6 +152,13 @@ python3 skills/skill-miner/scripts/scan_sessions.py --no-include-archives --no-i
 ## 研究背景
 
 本项目参考了 Agent Skills 生态，以及 LLM agent 在外部记忆、skill library、检索/路由和长上下文行为方面的研究。详见 [docs/research-background.md](./docs/research-background.md)。
+
+## AI 和搜索可见性
+
+- 项目站点：https://hqhq1025.github.io/skill-optimizer/
+- LLM 摘要：[llms.txt](./llms.txt)
+- 完整 LLM 上下文：[llms-full.txt](./llms-full.txt)
+- 结构化元数据：[repo-metadata.json](./repo-metadata.json)
 
 ## 许可证
 

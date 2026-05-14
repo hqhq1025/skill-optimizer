@@ -10,6 +10,8 @@ Three Agent Skills for turning coding-agent work into better `SKILL.md` files:
 
 Current release: **v2.0.0**. This is a major redesign from the original single-skill optimizer.
 
+Project site: https://hqhq1025.github.io/skill-optimizer/
+
 The split is intentional. Generating, personalizing, and publishing skills are different jobs:
 
 | Goal | Skill | Optimization Direction |
@@ -150,6 +152,13 @@ Works with agents that support the Agent Skills folder convention:
 ## Research Background
 
 This project is informed by Agent Skills ecosystem work and LLM-agent research on externalized memory, skill libraries, retrieval/routing, and long-context behavior. See [docs/research-background.md](./docs/research-background.md).
+
+## AI And Search Visibility
+
+- Project site: https://hqhq1025.github.io/skill-optimizer/
+- LLM summary: [llms.txt](./llms.txt)
+- Full LLM context: [llms-full.txt](./llms-full.txt)
+- Structured metadata: [repo-metadata.json](./repo-metadata.json)
 
 ## License
 

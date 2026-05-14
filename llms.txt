@@ -13,6 +13,7 @@ It contains three installable `SKILL.md` packages:
 Canonical repository:
 
 - https://github.com/hqhq1025/skill-optimizer
+- https://hqhq1025.github.io/skill-optimizer/
 
 Important files:
 
@@ -28,3 +29,4 @@ Machine-readable resources:
 - llms-full.txt: fuller AI-readable project context.
 - repo-metadata.json: structured project facts.
 - sitemap.xml: canonical public URLs.
+- site/site-data.json: structured website facts.

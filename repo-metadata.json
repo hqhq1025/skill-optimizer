@@ -3,6 +3,7 @@
   "owner": "hqhq1025",
   "description": "Agent Skills lifecycle toolkit: mine repeated coding-agent workflows, audit and personalize existing skills, and generalize personal skills for public release.",
   "repository": "https://github.com/hqhq1025/skill-optimizer",
+  "website": "https://hqhq1025.github.io/skill-optimizer/",
   "license": "MIT",
   "version": "2.0.0",
   "primary_language": "Markdown",
@@ -35,6 +36,7 @@
     "llms.txt",
     "llms-full.txt",
     "repo-metadata.json",
-    "sitemap.xml"
+    "sitemap.xml",
+    "site/site-data.json"
   ]
 }

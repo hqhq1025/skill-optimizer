@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill Optimizer — Agent Skills Lifecycle Toolkit</title>
+  <meta name="description" content="Skill Optimizer is an Agent Skills lifecycle toolkit: mine repeated coding-agent workflows, personalize skills to local usage, and generalize skills for public release.">
+  <meta name="keywords" content="Agent Skills, SKILL.md, Codex skills, Claude Code skills, Cursor skills, OpenCode skills, Gemini CLI skills, skill miner, skill personalizer, skill generalizer">
+  <meta name="author" content="hqhq1025">
+  <meta property="og:title" content="Skill Optimizer">
+  <meta property="og:description" content="Mine, personalize, and generalize Agent Skills with evidence from coding-agent history.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hqhq1025.github.io/skill-optimizer/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://hqhq1025.github.io/skill-optimizer/">
+  <link rel="alternate" type="text/plain" href="../llms.txt" title="LLMs summary">
+  <link rel="alternate" type="application/json" href="../repo-metadata.json" title="Repository metadata">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Skill Optimizer",
+    "codeRepository": "https://github.com/hqhq1025/skill-optimizer",
+    "url": "https://hqhq1025.github.io/skill-optimizer/",
+    "description": "Agent Skills lifecycle toolkit for mining repeated coding-agent workflows, auditing and personalizing skills, and generalizing personal skills for public release.",
+    "license": "https://opensource.org/license/mit",
+    "programmingLanguage": ["Markdown", "Python"],
+    "applicationCategory": "DeveloperTool",
+    "keywords": ["Agent Skills", "SKILL.md", "Codex", "Claude Code", "Cursor", "OpenCode", "Gemini CLI"],
+    "author": {"@type": "Person", "name": "hqhq1025"}
+  }
+  </script>
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Skill Optimizer home">Skill Optimizer</a>
+      <div class="nav-links">
+        <a href="#skills">Skills</a>
+        <a href="#install">Install</a>
+        <a href="#llm">For LLMs</a>
+        <a href="https://github.com/hqhq1025/skill-optimizer">GitHub</a>
+      </div>
+    </nav>
+    <section id="top" class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Agent Skills lifecycle toolkit</p>
+        <h1>Turn coding-agent history into reusable skills.</h1>
+        <p class="lede">Skill Optimizer helps you mine repeated workflows, personalize skills to local habits, and generalize private skills for public release.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="https://github.com/hqhq1025/skill-optimizer">View on GitHub</a>
+          <a class="button" href="#install">Install skills</a>
+        </div>
+      </div>
+      <div class="signal-panel" aria-label="Lifecycle summary">
+        <div class="signal-line"><span>01</span><strong>Mine</strong><em>find repeatable workflows</em></div>
+        <div class="signal-line"><span>02</span><strong>Personalize</strong><em>fit skills to local usage</em></div>
+        <div class="signal-line"><span>03</span><strong>Generalize</strong><em>publish safely and portably</em></div>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="section" id="why">
+      <div class="section-heading">
+        <p class="eyebrow">Why this exists</p>
+        <h2>Skills should evolve from real work, not guesswork.</h2>
+      </div>
+      <div class="dense-grid three">
+        <article>
+          <h3>Evidence first</h3>
+          <p>Scan active sessions, archives, rollout summaries, memories, Gemini/Antigravity task files, and exported transcripts before creating a new skill.</p>
+        </article>
+        <article>
+          <h3>Local fit</h3>
+          <p>Audit trigger fit, undertriggering, noisy activation, workflow completion, static quality, conflicts, environment assumptions, and token economics.</p>
+        </article>
+        <article>
+          <h3>Public ready</h3>
+          <p>Remove private paths, credentials, internal hosts, transcript quotes, one-off project facts, and platform-specific claims before release.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="section-heading">
+        <p class="eyebrow">Three installable skills</p>
+        <h2>Mine, personalize, generalize.</h2>
+      </div>
+      <div class="skill-list">
+        <article class="skill-card">
+          <span class="tag">skill-miner</span>
+          <h3>Mine skill-worthy workflows</h3>
+          <p>Find repeated work in coding-agent history and produce evidence-backed candidates instead of brainstorming skills from scratch.</p>
+          <code>skills/skill-miner/SKILL.md</code>
+        </article>
+        <article class="skill-card">
+          <span class="tag">skill-personalizer</span>
+          <h3>Audit and tune existing skills</h3>
+          <p>Keep the original optimizer spirit: trigger fit, undertriggering, overtriggering, user reaction, workflow completion, static quality, conflicts, and P0/P1/P2 fixes.</p>
+          <code>skills/skill-personalizer/SKILL.md</code>
+        </article>
+        <article class="skill-card">
+          <span class="tag">skill-generalizer</span>
+          <h3>Prepare skills for public release</h3>
+          <p>Turn a personal skill into a portable package for GitHub, marketplaces, teams, or cross-agent sharing.</p>
+          <code>skills/skill-generalizer/SKILL.md</code>
+        </article>
+      </div>
+    </section>
+
+    <section class="section split" id="install">
+      <div>
+        <p class="eyebrow">Install</p>
+        <h2>Use the portable Agent Skills path.</h2>
+        <p>Install all three skills into <code>~/.agents/skills</code>, or copy them into the native directory for Codex, Claude Code, Cursor, OpenCode, Gemini CLI, or another Agent Skills-compatible agent.</p>
+      </div>
+      <pre><code>git clone https://github.com/hqhq1025/skill-optimizer.git /tmp/skill-optimizer
+mkdir -p ~/.agents/skills
+cp -r /tmp/skill-optimizer/skills/skill-miner ~/.agents/skills/
+cp -r /tmp/skill-optimizer/skills/skill-personalizer ~/.agents/skills/
+cp -r /tmp/skill-optimizer/skills/skill-generalizer ~/.agents/skills/
+rm -rf /tmp/skill-optimizer</code></pre>
+    </section>
+
+    <section class="section" id="platforms">
+      <div class="section-heading">
+        <p class="eyebrow">Agent support</p>
+        <h2>Portable format, honest platform boundaries.</h2>
+      </div>
+      <div class="platform-table" role="table" aria-label="Supported coding agents">
+        <div role="row"><strong>Codex</strong><span><code>~/.codex/skills</code> or <code>.agents/skills</code></span></div>
+        <div role="row"><strong>Claude Code</strong><span><code>~/.claude/skills</code> or <code>.claude/skills</code></span></div>
+        <div role="row"><strong>Cursor</strong><span><code>.agents/skills</code> or <code>.cursor/skills</code></span></div>
+        <div role="row"><strong>OpenCode</strong><span><code>.agents/skills</code>, <code>.opencode/skills</code>, or <code>~/.config/opencode/skills</code></span></div>
+        <div role="row"><strong>Gemini CLI</strong><span>Agent Skills-compatible installs plus <code>GEMINI.md</code> for always-on context</span></div>
+      </div>
+    </section>
+
+    <section class="section split" id="llm">
+      <div>
+        <p class="eyebrow">For LLMs and crawlers</p>
+        <h2>Machine-readable project facts are first-class.</h2>
+        <p>The repo includes concise and full LLM context, structured metadata, a citation file, and a sitemap so AI systems can retrieve the real project facts without guessing.</p>
+      </div>
+      <div class="link-stack">
+        <a href="../llms.txt">llms.txt</a>
+        <a href="../llms-full.txt">llms-full.txt</a>
+        <a href="../repo-metadata.json">repo-metadata.json</a>
+        <a href="../docs/research-background.md">research background</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Skill Optimizer v2.0.0</span>
+    <a href="https://github.com/hqhq1025/skill-optimizer/releases/tag/v2.0.0">Release notes</a>
+  </footer>
+</body>
+</html>
