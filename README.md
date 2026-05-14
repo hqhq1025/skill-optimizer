@@ -2,151 +2,152 @@
 
 [中文版](./README.zh-CN.md)
 
-Diagnose and optimize your [Agent Skills](https://agentskills.io) (SKILL.md files) using **real session data + research-backed static analysis**. Get a prioritized report with P0/P1/P2 fixes.
+Three Agent Skills for turning coding-agent work into better `SKILL.md` files:
 
-Works with **Claude Code**, **Codex**, and any agent supporting the Agent Skills open standard. Auto-detects your platform and scans the right paths.
+- **skill-miner** — mine coding-agent history, archives, memories, and repeated work to surface skill-worthy workflows with evidence.
+- **skill-personalizer** — audit and adapt newly created, downloaded, forked, or community skills to one user's own tools, habits, directories, and session history.
+- **skill-generalizer** — turn local, private, personal skills into publishable skills for GitHub, marketplaces, teams, or public sharing.
 
-Most skill auditors only do static checks on your SKILL.md. This one also mines your actual session transcripts to measure trigger rates, user satisfaction, workflow completion, and undertrigger gaps — then scores each skill on a 5-point composite scale.
+The split is intentional. Generating, personalizing, and publishing skills are different jobs:
 
-## What It Does
+| Goal | Skill | Optimization Direction |
+| --- | --- | --- |
+| Mine repeated workflows | `skill-miner` | Scan real agent usage, cluster repeated workflows, and draft evidence-backed candidate skills. |
+| Fit inward | `skill-personalizer` | Preserve the original optimizer's audit checks, then add local defaults, user phrasing, preferred tools, verification habits, and workflow shortcuts. |
+| Publish outward | `skill-generalizer` | Remove private context, generalize examples, make install and README claims portable. |
 
-**6 scored dimensions** (weighted into composite score):
-
-| Dimension | What's Measured |
-|-----------|----------------|
-| **Trigger Rate** | How often is the skill actually invoked vs. how often it should be? |
-| **User Reaction** | Does the user accept, correct, or reject the skill after invocation? |
-| **Workflow Completion** | How far through the skill's defined steps does execution get? |
-| **Static Quality** | 14 checks: YAML safety, CSO compliance, info position, word count, etc. |
-| **Undertrigger** | Missed opportunities — user needed the skill but it wasn't invoked |
-| **Token Economics** | Cost-effectiveness and progressive disclosure tier compliance |
-
-**3 qualitative dimensions** (reported but not scored):
-
-| Dimension | What's Measured |
-|-----------|----------------|
-| **Overtrigger** | False positives — skill fired but user didn't want it |
-| **Cross-Skill Conflicts** | Trigger keyword overlap and contradictory guidance between skills |
-| **Environment Consistency** | Broken file paths, missing CLI tools, non-existent directories |
+See [Research Background](./docs/research-background.md) for related agent-skill ecosystems, comparable projects, and papers that motivate session mining, skill libraries, trigger auditing, progressive disclosure, and lifecycle governance.
 
 ## Installation
 
-Copy the command below and paste it directly into your agent's chat — it will install automatically:
+Copy the command below into your agent's chat:
 
 ### Claude Code
 
-```
-Install the skill-optimizer skill from https://github.com/hqhq1025/skill-optimizer
+```text
+Install the skills from https://github.com/hqhq1025/skill-optimizer
 ```
 
 ### Codex
 
-```
-Install the skill-optimizer skill from https://github.com/hqhq1025/skill-optimizer into ~/.codex/skills/
-```
-
-### Other Agents (Cursor, OpenCode, Gemini CLI, etc.)
-
-```
-Install the skill-optimizer skill from https://github.com/hqhq1025/skill-optimizer into ~/.agents/skills/
+```text
+Install the skills from https://github.com/hqhq1025/skill-optimizer into ~/.codex/skills/
 ```
 
-<details>
-<summary>Manual install</summary>
+### Other Agent Skills-compatible agents
+
+```text
+Install the skills from https://github.com/hqhq1025/skill-optimizer into ~/.agents/skills/
+```
+
+Manual install:
 
 ```bash
-# Claude Code
 git clone https://github.com/hqhq1025/skill-optimizer.git /tmp/skill-optimizer
-cp -r /tmp/skill-optimizer/skills/skill-optimizer ~/.claude/skills/
-rm -rf /tmp/skill-optimizer
-
-# Codex
-git clone https://github.com/hqhq1025/skill-optimizer.git /tmp/skill-optimizer
-cp -r /tmp/skill-optimizer/skills/skill-optimizer ~/.codex/skills/
-rm -rf /tmp/skill-optimizer
-
-# Shared (any agent)
-git clone https://github.com/hqhq1025/skill-optimizer.git /tmp/skill-optimizer
-cp -r /tmp/skill-optimizer/skills/skill-optimizer ~/.agents/skills/
+mkdir -p ~/.agents/skills
+cp -r /tmp/skill-optimizer/skills/skill-miner ~/.agents/skills/
+cp -r /tmp/skill-optimizer/skills/skill-personalizer ~/.agents/skills/
+cp -r /tmp/skill-optimizer/skills/skill-generalizer ~/.agents/skills/
 rm -rf /tmp/skill-optimizer
 ```
 
-</details>
+For Codex-only installs, use `~/.codex/skills/`:
+
+```bash
+git clone https://github.com/hqhq1025/skill-optimizer.git /tmp/skill-optimizer
+mkdir -p ~/.codex/skills
+cp -r /tmp/skill-optimizer/skills/skill-generalizer ~/.codex/skills/
+cp -r /tmp/skill-optimizer/skills/skill-miner ~/.codex/skills/
+cp -r /tmp/skill-optimizer/skills/skill-personalizer ~/.codex/skills/
+rm -rf /tmp/skill-optimizer
+```
+
+For Claude Code-only installs, use `~/.claude/skills/`.
+
+## Platform Support
+
+| Agent | Support level | Recommended path |
+| --- | --- | --- |
+| Codex | Native Agent Skills, plus optional plugin metadata. | `~/.codex/skills/` or `.agents/skills/` |
+| Claude Code | Native skills in personal, project, and plugin scopes. | `~/.claude/skills/` or `.claude/skills/` |
+| Cursor | Native Agent Skills and rules/commands; skills are discoverable by Agent. | `.agents/skills/`, `.cursor/skills/`, or global skills |
+| OpenCode | Native `skill` tool and repo/home skill discovery. | `.agents/skills/`, `.opencode/skills/`, or `~/.config/opencode/skills/` |
+| Gemini CLI / Google agents | Agent Skills open format is documented by Google; `GEMINI.md` remains the always-on context mechanism. | `.agents/skills/` or installer-managed skills |
+
+The safest public layout is `skills/<name>/SKILL.md` in the repo plus install instructions that copy into `.agents/skills/` or the target agent's native skill directory.
 
 ## Usage
 
-```
-/optimize-skill              # Scan all skills
-/optimize-skill my-skill     # Single skill
-/optimize-skill skill-a skill-b  # Multiple skills
-```
+Ask for the direction you want:
 
-The skill generates a diagnostic report with:
-- **Overview table** — all skills at a glance with scores
-- **P0 Fixes** — blocking issues that must be resolved
-- **P1 Improvements** — experience improvements
-- **P2 Optimizations** — optional tweaks
-- **Per-skill diagnostics** — all 8 dimensions for each skill
-
-## Multi-Platform Session Analysis
-
-The optimizer auto-detects available platforms and scans session data from all of them:
-
-| Platform | Skills Path | Session Data Path |
-|----------|------------|-------------------|
-| Claude Code | `~/.claude/skills/` | `~/.claude/projects/**/*.jsonl` |
-| Codex | `~/.codex/skills/` | `~/.codex/sessions/**/*.jsonl` |
-| Shared | `~/.agents/skills/` | — |
-
-## Research Background
-
-The analysis dimensions are grounded in peer-reviewed research:
-
-| Research | Key Finding | Applied In |
-|----------|-------------|------------|
-| [Memento-Skills](https://arxiv.org/abs/2603.18743) (2026) | Skills as structured files require accurate routing; unrouted skills cannot self-improve via the read-write learning loop | Undertrigger detection, compounding risk assessment |
-| [MCP Description Quality](https://arxiv.org/abs/2602.18914) (2026) | Well-written descriptions achieve 72% tool selection rate vs. 20% random baseline (3.6x improvement) | Description quality checks, evidence-based rewrite suggestions |
-| [Lost in the Middle](https://arxiv.org/abs/2307.03172) (Liu et al., TACL 2024) | LLM attention follows a U-shaped curve — middle content is ignored | Critical info position check |
-| [Prompt Format Impact](https://arxiv.org/abs/2411.10541) (He et al., 2024) | Format changes alone cause 9-40% performance variance | Static quality analysis |
-| [IFEval](https://arxiv.org/abs/2311.07911) (Zhou et al., 2023) | LLMs struggle with multi-constraint prompts | Trigger condition count check |
-| [Meincke et al.](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5357179) (2025) | Persuasion directives have inconsistent effects across models | MUST/NEVER density guidance |
-
-## How It Works
-
-```
-Identify target skills (scan ~/.claude/skills/, ~/.codex/skills/, ~/.agents/skills/)
-        ↓
-Collect session data (auto-detect platform, scan JSONL transcripts)
-        ↓
-Run 8 analysis dimensions (6 scored + 3 qualitative)
-        ↓
-Compute composite scores (weighted average of 6 scored dimensions)
-        ↓
-Output report with P0/P1/P2 prioritized fixes
+```text
+Mine my coding-agent history and find repeated workflows that should become skills.
 ```
 
-**Scored dimensions (weighted average):**
-- Trigger rate: 25%
-- User reaction: 20%
-- Workflow completion: 15%
-- Static quality: 15%
-- Undertrigger: 15%
-- Token economics: 10%
+```text
+Audit and tune my installed skills; tell me which ones are undertriggering, too noisy, or too generic.
+```
 
-**Qualitative dimensions** (overtrigger, cross-skill conflicts, environment consistency) are reported with examples but do not affect the numeric score.
+```text
+Turn this local skill into a public GitHub-ready skill.
+```
+
+```text
+I downloaded this skill. Tune it to my local workflow and usage habits.
+```
+
+```text
+This skill does not trigger when I say things naturally. Personalize it for me.
+```
+
+## What Each Skill Does
+
+### skill-miner
+
+- coding-agent session history, memory summaries, repo notes, repeated scripts, and project folders
+- recurring user intents, shorthand, tool chains, artifacts, and verification patterns
+- candidates that are repeated and non-obvious enough to become skills
+- whether a candidate should stay personal, be generalized for publication, or be skipped
+- includes `scripts/scan_sessions.py` for a deterministic first-pass scan of Codex, Claude Code, Gemini/Antigravity task files, and exported transcripts from other agents
+- includes archived Codex sessions and rollout summaries by default, with flags to disable archive/summary sources
+
+Example:
+
+```bash
+python3 skills/skill-miner/scripts/scan_sessions.py --days 30 --limit 300 --min-count 3
+python3 skills/skill-miner/scripts/scan_sessions.py --export ~/Downloads/cursor-chat-export.json
+python3 skills/skill-miner/scripts/scan_sessions.py --patterns ./my-patterns.json
+python3 skills/skill-miner/scripts/scan_sessions.py --no-include-archives --no-include-summaries
+```
+
+### skill-generalizer
+
+- private paths, hosts, credentials, account names, transcript quotes, and internal repo facts
+- public portability of commands, examples, README claims, and install instructions
+- frontmatter that describes when to use the skill rather than the workflow
+- packaging structure for public distribution
+
+### skill-personalizer
+
+- local installed copies and nearby project instructions
+- real user phrasing and recurring task patterns
+- preferred CLIs, MCP tools, paths, aliases, and verification commands
+- undertrigger, overtrigger, and unnecessary-question friction
+- original optimizer-style audit checks: trigger fit, user reaction, workflow completion, static quality, conflicts, environment consistency, token economics, and P0/P1/P2 fixes
 
 ## Compatibility
 
-Works with any agent that supports the [Agent Skills](https://agentskills.io) open standard:
+Works with agents that support the Agent Skills folder convention:
+
 - Claude Code
 - Codex
 - Cursor
 - OpenCode
 - Gemini CLI
 
-## Community
+## Research Background
 
-- [LINUX DO](https://linux.do) — Where we first shared this project
+This project is informed by Agent Skills ecosystem work and LLM-agent research on externalized memory, skill libraries, retrieval/routing, and long-context behavior. See [docs/research-background.md](./docs/research-background.md).
 
 ## License
 

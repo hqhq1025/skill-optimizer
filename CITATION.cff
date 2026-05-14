@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: "Skill Optimizer"
+message: "If you use Skill Optimizer, please cite the repository."
+type: software
+authors:
+  - name: "hqhq1025"
+repository-code: "https://github.com/hqhq1025/skill-optimizer"
+url: "https://github.com/hqhq1025/skill-optimizer"
+license: MIT
+abstract: "Agent Skills lifecycle toolkit for mining repeated coding-agent workflows, auditing and personalizing skills, and generalizing personal skills for public release."
+keywords:
+  - agent-skills
+  - skill-miner
+  - codex
+  - claude-code
+  - cursor
+  - opencode
+  - gemini-cli
+  - llm-agents

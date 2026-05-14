@@ -1,0 +1,82 @@
+# Skill Optimizer Full Context
+
+## Project
+
+Skill Optimizer is an Agent Skills lifecycle toolkit. It helps users turn coding-agent experience into reusable skills, tune skills to local usage, and prepare skills for public release.
+
+Repository: https://github.com/hqhq1025/skill-optimizer
+
+## Skill Lifecycle Model
+
+1. Mine repeated workflows.
+   - Skill: `skill-miner`
+   - Purpose: scan coding-agent histories, archived sessions, rollout summaries, memories, Gemini/Antigravity task files, and exported transcripts to find repeated workflows that may deserve new skills.
+
+2. Audit and personalize existing skills.
+   - Skill: `skill-personalizer`
+   - Purpose: preserve the original Skill Optimizer audit strengths: trigger fit, undertrigger, overtrigger, user reaction, workflow completion, static quality, cross-skill conflicts, environment consistency, token economics, and P0/P1/P2 fixes. Then tune skills to one user's tools, paths, aliases, wording, and validation habits.
+
+3. Generalize for publication.
+   - Skill: `skill-generalizer`
+   - Purpose: convert local/private/personal skills into public-ready skills by removing private paths, credentials, hostnames, transcripts, one-off project facts, and platform-specific assumptions.
+
+## Installation Paths
+
+Recommended portable path:
+
+```bash
+~/.agents/skills/
+```
+
+Common platform-specific paths:
+
+- Codex: `~/.codex/skills/`
+- Claude Code: `~/.claude/skills/`
+- Cursor project skills: `.agents/skills/` or `.cursor/skills/`
+- OpenCode project skills: `.agents/skills/` or `.opencode/skills/`
+- OpenCode global skills: `~/.config/opencode/skills/`
+
+## Key Commands
+
+Run the history miner:
+
+```bash
+python3 skills/skill-miner/scripts/scan_sessions.py --days 30 --limit 300 --min-count 3
+```
+
+Include exported transcripts:
+
+```bash
+python3 skills/skill-miner/scripts/scan_sessions.py --export ~/Downloads/cursor-chat-export.json
+```
+
+Use a custom workflow pattern file:
+
+```bash
+python3 skills/skill-miner/scripts/scan_sessions.py --patterns ./my-patterns.json
+```
+
+Disable archive and summary sources:
+
+```bash
+python3 skills/skill-miner/scripts/scan_sessions.py --no-include-archives --no-include-summaries
+```
+
+## Research Background
+
+The project is informed by:
+
+- Memento-Skills: externalized evolving skills as memory.
+- Agent Skills for Large Language Models: progressive disclosure, portable skill definitions, security, and lifecycle governance.
+- Voyager: skill libraries, execution feedback, and self-verification.
+- Reflexion and ExpeL: learning from feedback and experience without weight updates.
+- Lost in the Middle: need to front-load important trigger and safety information.
+- RAG-MCP and MCP tool-description work: routing quality, prompt bloat, and tool selection.
+
+## Public Claims
+
+Skill Optimizer does not claim identical support depth across all coding agents. It uses conservative `SKILL.md` frontmatter for portability and notes that discovery, metadata, permissions, install paths, and UI invocation vary by Codex, Claude Code, Cursor, OpenCode, Gemini CLI, and related agents.
+
+## Privacy
+
+The miner is designed to emit sanitized summaries and representative snippets. Raw transcripts should remain local unless the user explicitly chooses to share them.

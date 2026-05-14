@@ -1,0 +1,28 @@
+# Skill Optimizer
+
+Skill Optimizer is a public Agent Skills lifecycle toolkit by hqhq1025.
+
+It contains three installable `SKILL.md` packages:
+
+- `skill-miner`: mines coding-agent histories, archived sessions, memories, summaries, and exported transcripts to discover repeated workflows that may deserve new skills.
+- `skill-personalizer`: audits and tunes existing, downloaded, forked, or newly created skills for one user's local tools, paths, phrasing, workflows, and trigger behavior.
+- `skill-generalizer`: converts local or private skills into safer, portable, public-ready skills for GitHub, marketplaces, teams, or cross-agent sharing.
+
+Canonical repository:
+
+- https://github.com/hqhq1025/skill-optimizer
+
+Important files:
+
+- README.md: overview, install instructions, platform support, usage examples.
+- README.zh-CN.md: Chinese overview and usage.
+- docs/research-background.md: research and ecosystem background.
+- skills/skill-miner/SKILL.md: skill for mining repeated workflows from agent history.
+- skills/skill-personalizer/SKILL.md: skill for auditing and personalizing existing skills.
+- skills/skill-generalizer/SKILL.md: skill for public release generalization.
+
+Machine-readable resources:
+
+- llms-full.txt: fuller AI-readable project context.
+- repo-metadata.json: structured project facts.
+- sitemap.xml: canonical public URLs.

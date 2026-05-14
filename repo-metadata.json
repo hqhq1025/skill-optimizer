@@ -1,0 +1,39 @@
+{
+  "name": "skill-optimizer",
+  "owner": "hqhq1025",
+  "description": "Agent Skills lifecycle toolkit: mine repeated coding-agent workflows, audit and personalize existing skills, and generalize personal skills for public release.",
+  "repository": "https://github.com/hqhq1025/skill-optimizer",
+  "license": "MIT",
+  "primary_language": "Markdown",
+  "skills": [
+    {
+      "name": "skill-miner",
+      "path": "skills/skill-miner/SKILL.md",
+      "purpose": "Mine coding-agent history and archives for repeated workflows that should become skills."
+    },
+    {
+      "name": "skill-personalizer",
+      "path": "skills/skill-personalizer/SKILL.md",
+      "purpose": "Audit and tune skills for one user's local workflow, paths, tools, phrasing, and trigger behavior."
+    },
+    {
+      "name": "skill-generalizer",
+      "path": "skills/skill-generalizer/SKILL.md",
+      "purpose": "Generalize personal or private skills for public release and cross-agent portability."
+    }
+  ],
+  "supported_agents": [
+    "Codex",
+    "Claude Code",
+    "Cursor",
+    "OpenCode",
+    "Gemini CLI",
+    "Agent Skills compatible agents"
+  ],
+  "machine_readable_files": [
+    "llms.txt",
+    "llms-full.txt",
+    "repo-metadata.json",
+    "sitemap.xml"
+  ]
+}
